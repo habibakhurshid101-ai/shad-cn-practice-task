@@ -13,7 +13,7 @@ const AdminHeader = () => {
   const [date, setDate] = React.useState(new Date(2025, 8, 13));
 
   return (
-    <div className="flex items-center justify-between text-white w-full ">
+    <div className="flex flex-col md:flex-row md:items-center md:justify-between text-white w-full gap-4">
       {/* Left Side */}
       <div>
         <h1 className="text-2xl md:text-3xl font-bold mb-2">Dashboard</h1>
@@ -23,11 +23,11 @@ const AdminHeader = () => {
       </div>
 
       {/* Right Side */}
-      <div className="flex items-center space-x-3">
+      <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
         {/* Calendar Button with Popover */}
         <Popover>
           <PopoverTrigger asChild>
-            <button className="flex items-center border border-neutral-700 text-white px-4 py-2 rounded-md hover:bg-neutral-800 transition">
+            <button className="flex items-center justify-center border border-neutral-700 text-white px-4 py-2 rounded-md hover:bg-neutral-800 transition w-full sm:w-auto">
               <FiCalendar className="w-4 h-4 mr-2" />
               {date
                 ? date.toLocaleDateString("en-US", {
@@ -50,7 +50,7 @@ const AdminHeader = () => {
         </Popover>
 
         {/* Export Button */}
-        <button className="flex items-center border border-neutral-700 text-white px-4 py-2 rounded-md hover:bg-neutral-800 transition">
+        <button className="flex items-center justify-center border border-neutral-700 text-white px-4 py-2 rounded-md hover:bg-neutral-800 transition w-full sm:w-auto">
           <FiDownload className="w-4 h-4 mr-2" />
           Export
         </button>

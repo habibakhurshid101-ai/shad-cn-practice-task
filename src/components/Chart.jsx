@@ -60,12 +60,12 @@ const Chart = () => {
   return (
     <div className="min-h-screen mt-10 text-white">
       {/* Tabs */}
-      <div className="flex gap-4 mb-6">
+      <div className="flex flex-wrap gap-2 md:gap-4 mb-6">
         {tabs.map((tab) => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`py-2 px-4 rounded-t-md text-sm font-medium ${
+            className={`py-2 px-4 rounded-t-md text-sm font-medium w-full sm:w-auto ${
               activeTab === tab
                 ? "bg-neutral-800 text-white"
                 : "text-neutral-400 hover:text-white"
@@ -167,156 +167,153 @@ const Chart = () => {
 
         {/* Analytics Tab */}
         {activeTab === "Analytics" && (
-        <div>
-           <h3 className="text-2xl font-bold mb-2">
-                Notification Settings
-              </h3>
-              <p className="text-base text-gray-400 mb-6">
-                Manage how you receive notifications
-              </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-            
-            {/* Patient Demographics */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Patient Demographics</CardTitle>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={genderData}>
-                    <XAxis dataKey="age" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="Male" fill="#3B82F6" />
-                    <Bar dataKey="Female" fill="#F472B6" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+          <div>
+            <h3 className="text-2xl font-bold mb-2">Notification Settings</h3>
+            <p className="text-base text-gray-400 mb-6">
+              Manage how you receive notifications
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {/* Patient Demographics */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Patient Demographics</CardTitle>
+                </CardHeader>
+                <CardContent className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={genderData}>
+                      <XAxis dataKey="age" />
+                      <YAxis />
+                      <Tooltip />
+                      <Legend />
+                      <Bar dataKey="Male" fill="#3B82F6" />
+                      <Bar dataKey="Female" fill="#F472B6" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
 
-            {/* Appointment Types */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Appointment Types</CardTitle>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={appointmentData}
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                      label
+              {/* Appointment Types */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Appointment Types</CardTitle>
+                </CardHeader>
+                <CardContent className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <PieChart>
+                      <Pie
+                        data={appointmentData}
+                        cx="50%"
+                        cy="50%"
+                        outerRadius={80}
+                        fill="#8884d8"
+                        dataKey="value"
+                        label
+                      >
+                        {appointmentData.map((entry, index) => (
+                          <Cell
+                            key={`cell-${index}`}
+                            fill={COLORS[index % COLORS.length]}
+                          />
+                        ))}
+                      </Pie>
+                      <Tooltip />
+                    </PieChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
+
+              {/* Revenue Sources */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Revenue Sources</CardTitle>
+                </CardHeader>
+                <CardContent className="h-[300px]">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart
+                      data={revenueData}
+                      layout="vertical"
+                      margin={{ top: 20, right: 30, left: 40, bottom: 20 }}
                     >
-                      {appointmentData.map((entry, index) => (
-                        <Cell
-                          key={`cell-${index}`}
-                          fill={COLORS[index % COLORS.length]}
-                        />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+                      <XAxis type="number" />
+                      <YAxis type="category" dataKey="department" />
+                      <Tooltip />
+                      <Bar dataKey="revenue" fill="#10B981" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </CardContent>
+              </Card>
 
-            {/* Revenue Sources */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Revenue Sources</CardTitle>
-              </CardHeader>
-              <CardContent className="h-[300px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart
-                    data={revenueData}
-                    layout="vertical"
-                    margin={{ top: 20, right: 30, left: 40, bottom: 20 }}
-                  >
-                    <XAxis type="number" />
-                    <YAxis type="category" dataKey="department" />
-                    <Tooltip />
-                    <Bar dataKey="revenue" fill="#10B981" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </CardContent>
-            </Card>
+              {/* Patient Satisfaction */}
+              <Card className="col-span-1 xl:col-span-2">
+                <CardHeader>
+                  <CardTitle>Patient Satisfaction</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {[
+                    { label: "Overall Experience", value: 87 },
+                    { label: "Wait Times", value: 72 },
+                    { label: "Staff Friendliness", value: 94 },
+                    { label: "Treatment Effectiveness", value: 89 },
+                  ].map((item) => (
+                    <div key={item.label}>
+                      <div className="flex justify-between text-sm font-medium mb-1">
+                        <span>{item.label}</span>
+                        <span>{item.value}%</span>
+                      </div>
+                      <Progress value={item.value} />
+                    </div>
+                  ))}
+                </CardContent>
+              </Card>
 
-            {/* Patient Satisfaction */}
-            <Card className="col-span-1 xl:col-span-2">
-              <CardHeader>
-                <CardTitle>Patient Satisfaction</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {[
-                  { label: "Overall Experience", value: 87 },
-                  { label: "Wait Times", value: 72 },
-                  { label: "Staff Friendliness", value: 94 },
-                  { label: "Treatment Effectiveness", value: 89 },
-                ].map((item) => (
-                  <div key={item.label}>
-                    <div className="flex justify-between text-sm font-medium mb-1">
-                      <span>{item.label}</span>
-                      <span>{item.value}%</span>
+              {/* Staff Performance */}
+              <Card>
+                <CardHeader>
+                  <CardTitle>Staff Performance</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {[
+                    {
+                      name: "Dr. Sarah Chen",
+                      role: "Cardiologist",
+                      rating: 4.9,
+                      patients: 42,
+                    },
+                    {
+                      name: "Dr. Michael Rodriguez",
+                      role: "Pediatrician",
+                      rating: 4.8,
+                      patients: 38,
+                    },
+                    {
+                      name: "Dr. Emily Johnson",
+                      role: "Neurologist",
+                      rating: 4.7,
+                      patients: 35,
+                    },
+                    {
+                      name: "Nurse Robert Kim",
+                      role: "Head Nurse",
+                      rating: 4.9,
+                      patients: 56,
+                    },
+                  ].map((staff) => (
+                    <div
+                      key={staff.name}
+                      className="border-b pb-2 last:border-b-0 last:pb-0"
+                    >
+                      <div className="font-medium">{staff.name}</div>
+                      <div className="text-sm text-muted-foreground">
+                        {staff.role}
+                      </div>
+                      <div className="text-sm mt-1">
+                        Patients: {staff.patients} | ⭐ Rating: {staff.rating}/5
+                      </div>
                     </div>
-                    <Progress value={item.value} />
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-
-            {/* Staff Performance */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Staff Performance</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                {[
-                  {
-                    name: "Dr. Sarah Chen",
-                    role: "Cardiologist",
-                    rating: 4.9,
-                    patients: 42,
-                  },
-                  {
-                    name: "Dr. Michael Rodriguez",
-                    role: "Pediatrician",
-                    rating: 4.8,
-                    patients: 38,
-                  },
-                  {
-                    name: "Dr. Emily Johnson",
-                    role: "Neurologist",
-                    rating: 4.7,
-                    patients: 35,
-                  },
-                  {
-                    name: "Nurse Robert Kim",
-                    role: "Head Nurse",
-                    rating: 4.9,
-                    patients: 56,
-                  },
-                ].map((staff) => (
-                  <div
-                    key={staff.name}
-                    className="border-b pb-2 last:border-b-0 last:pb-0"
-                  >
-                    <div className="font-medium">{staff.name}</div>
-                    <div className="text-sm text-muted-foreground">
-                      {staff.role}
-                    </div>
-                    <div className="text-sm mt-1">
-                      Patients: {staff.patients} | ⭐ Rating: {staff.rating}/5
-                    </div>
-                  </div>
-                ))}
-              </CardContent>
-            </Card>
-          </div>
+                  ))}
+                </CardContent>
+              </Card>
+            </div>
           </div>
         )}
 
@@ -342,12 +339,10 @@ const Chart = () => {
         {/* Notifications Tab */}
         {activeTab === "Notifications" && (
           <div>
-            <h3 className="text-2xl font-bold mb-2">
-                Notification Settings
-              </h3>
-              <p className="text-base text-gray-400 mb-6">
-                Manage how you receive notifications
-              </p>
+            <h3 className="text-2xl font-bold mb-2">Notification Settings</h3>
+            <p className="text-base text-gray-400 mb-6">
+              Manage how you receive notifications
+            </p>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
               {[
                 {
@@ -399,9 +394,7 @@ const Chart = () => {
             </div>
 
             <div className=" p-6 rounded-xl border ">
-              <h3 className="text-2xl font-bold mb-2">
-                Notification Settings
-              </h3>
+              <h3 className="text-2xl font-bold mb-2">Notification Settings</h3>
               <p className="text-sm text-gray-400 mb-6">
                 Manage how you receive notifications
               </p>
